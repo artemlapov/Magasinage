@@ -16,20 +16,25 @@ struct ContentView: View {
 
     var body: some View {
 
-        List {
-            Section("En cours") {
-                ForEach(pendingTasks) { $task in
-                    TaskViewCell(task: $task)
+        VStack {
+            List {
+                Section("En cours") {
+                    ForEach(pendingTasks) { $task in
+                        TaskViewCell(task: $task)
+                    }
                 }
-            }
 
-            Section("Terminé") {
-                ForEach(completedTasks) { $task in
-                    TaskViewCell(task: $task)
+                Section("Terminé") {
+                    ForEach(completedTasks) { $task in
+                        TaskViewCell(task: $task)
+                    }
                 }
             }
-            
-            }
+            Spacer()
+            AddTaskView()
+                .padding()
+                .shadow(radius: 2)
+        }
     }
 }
 
