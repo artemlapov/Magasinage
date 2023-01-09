@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct MagasinageApp: App {
+    @StateObject private var data = DataStore()
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(DataStore())
         }
     }
 }

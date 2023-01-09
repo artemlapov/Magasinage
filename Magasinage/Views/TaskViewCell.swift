@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TaskViewCell: View {
-    @Binding var task: Task
+    var task: Task
 
     var body: some View {
         HStack {
@@ -16,12 +16,12 @@ struct TaskViewCell: View {
                 .foregroundColor(task.isCompleted ? .gray : .cyan)
                 .onTapGesture { _ in
                     withAnimation {
-                        task.isCompleted.toggle()
+                        //task.isCompleted.toggle()
                     }
                 }
             HStack {
                 Text(task.taskText)
-                    .foregroundColor(task.isCompleted ? .gray : .black)
+                    .foregroundColor(task.isCompleted ? .gray : .primary)
                     .strikethrough(task.isCompleted ? true : false, color: .gray)
                 Spacer()
             }
@@ -31,6 +31,6 @@ struct TaskViewCell: View {
 
 struct TaskViewCell_Previews: PreviewProvider {
     static var previews: some View {
-        TaskViewCell(task: .constant(Task(taskText: "hi", isCompleted: false, quantity: 3)))
+        TaskViewCell(task: Task(taskText: "Hello"))
     }
 }

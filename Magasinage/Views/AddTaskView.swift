@@ -8,28 +8,34 @@
 import SwiftUI
 
 struct AddTaskView: View {
-   @State var taskText = ""
+    //@ObservedObject var data: DataStore
+    @EnvironmentObject var data: DataStore
+    @Binding var taskText: String
+
 
     var body: some View {
         HStack {
-            Image(systemName: "circle.dotted")
             TextField("Ajouter un produit...", text: $taskText)
                 .textFieldStyle(.roundedBorder)
+                .keyboardType(.default)
             Button(action: addTask) {
                 Image(systemName: "plus.circle.fill")
                     .font(.largeTitle)
-                    .rotationEffect(.degrees(90))
             }
+            .disabled(taskText.isEmpty)
         }
     }
 
     private func addTask() {
+        data.tasks.append(Task(taskText: taskText, isCompleted: false))
+        taskText = ""
         print(taskText)
     }
 }
 
 struct AddTaskView_Previews: PreviewProvider {
     static var previews: some View {
-        AddTaskView()
+        AddTaskView(taskText: .constant("Hello"))
+            .environmentObject(DataStore())
     }
 }

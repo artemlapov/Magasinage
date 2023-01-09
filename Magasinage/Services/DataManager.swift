@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-class DataManager {
-
+class DataManager: ObservableObject {
 
 }

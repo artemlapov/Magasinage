@@ -7,11 +7,36 @@
 
 import Foundation
 
-class DataStore {
+//class DataStore {
+//
+//    static let shared = DataStore()
+//
+//    let taskTexts = ["Хлеб", "Молоко", "Свинина", "Окорок", "Чипсы", "Водка", "Соль", "Хлеб", "Молоко", "Свинина", "Окорок", "Чипсы", "Водка", "Соль"]
+//
+//    private init() {}
+//}
 
-    static let shared = DataStore()
+class DataStore: ObservableObject {
+    
+    @Published var tasks = [Task]() {
+        didSet {
+            let encoder = JSONEncoder()
 
-    let taskTexts = ["Хлеб", "Молоко", "Свинина", "Окорок", "Чипсы", "Водка", "Соль", "Хлеб", "Молоко", "Свинина", "Окорок", "Чипсы", "Водка", "Соль"]
+            if let encoded = try? encoder.encode(tasks) {
+                UserDefaults.standard.set(encoded, forKey: "Tasks")
+            }
+        }
+    }
 
-    private init() {}
+    init() {
+        if let tasks = UserDefaults.standard.data(forKey: "Tasks") {
+            let decoder = JSONDecoder()
+            if let decoded = try? decoder.decode([Task].self, from: tasks) {
+                self.tasks = decoded
+                return
+            }
+        }
+    }
+    
 }
+
