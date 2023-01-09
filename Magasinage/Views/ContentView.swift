@@ -8,13 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
-    
-    //@State private var tasks = Task.getTasks()
 
-//    @StateObject private var data = DataStore()
-
-    //@ObservedObject var data = DataStore()
     @State private var taskText = ""
+    @State private var settingsIsPresented = false
     @EnvironmentObject private var data: DataStore
 
    // private var pendingTasks: [Binding<Task>] { $tasks.filter { !$0.isCompleted.wrappedValue } }
@@ -26,42 +22,70 @@ struct ContentView: View {
     
     var body: some View {
 
-        VStack {
-            List {
-                Section("En cours") {
-                    if pendingTasks.isEmpty {
-                        Text("rien")
+        NavigationStack {
+            VStack {
+                List {
+                    Section("En cours") {
+                        if pendingTasks.isEmpty {
+                            HStack {
+                                Spacer()
+                                Image("list")
+                                    .resizable()
+                                .frame(width: 150, height: 150)
+                                Spacer()
+                            }
+                        }
+
+                        ForEach(pendingTasks) { task in
+                            TaskViewCell(task: task)
+                        }
+                        .onDelete { index in
+                            //code
+                        }
+
                     }
 
-                    ForEach(pendingTasks) { task in
-                        TaskViewCell(task: task)
-                    }
-                    .onDelete { index in
-                        //code
-                    }
+                    Section("Terminé") {
 
+                        if completedTasks.isEmpty {
+                            HStack {
+                                Spacer()
+                                Image("can")
+                                    .resizable()
+                                .frame(width: 150, height: 150)
+                                Spacer()
+                            }
+                        }
+
+                        ForEach(completedTasks) { task in
+                            TaskViewCell(task: task)
+                        }
+                        .onDelete { index in
+                            //code
+                        }
+                    }
                 }
 
-                Section("Terminé") {
 
-                    if completedTasks.isEmpty {
-                        Text("rien")
+                Spacer()
+                AddTaskView(data: _data, taskText: $taskText)
+                    .padding(.horizontal)
+                    //.background(.gray)
+            }
+            .navigationBarTitle("Votre liste d'achats")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Réglages") {
+                        settingsIsPresented.toggle()
+                    }
+                    .sheet(isPresented: $settingsIsPresented) {
+                        SettingsView()
                     }
 
-                    ForEach(completedTasks) { task in
-                        TaskViewCell(task: task)
-                    }
-                    .onDelete { index in
-                        //code
-                    }
+
                 }
             }
-
-
-            Spacer()
-            AddTaskView(data: _data, taskText: $taskText)
-                .padding()
-                //.background(.gray)
         }
     }
 }

@@ -33,7 +33,6 @@ class DataStore: ObservableObject {
             let decoder = JSONDecoder()
             if let decoded = try? decoder.decode([Task].self, from: tasks) {
                 self.tasks = decoded
-                return
             }
         }
     }
